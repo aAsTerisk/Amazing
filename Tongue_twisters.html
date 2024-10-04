@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Tongue Twisters</title>
+    <style>
+        /* Root CSS variables for theming */
+        :root {
+            --bg-color-light: #f7f9fc; /* Light background: subtle light blue */
+            --bg-color-dark: #1e1f26;  /* Dark background: deep charcoal */
+            --text-color-light: #2c3e50; /* Text color for light mode: dark slate */
+            --text-color-dark: #ecf0f1;  /* Text color for dark mode: light grey */
+            --primary-color: #00b894;   /* Main accent color: teal green */
+            --hover-color: #00cec9;     /* Hover color: slightly lighter teal */
+        }
+
+        /* Base body styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+            height: calc(var(--vh, 1vh) * 100); /* Dynamic viewport height for mobile */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for theme change */
+            opacity: 0; /* Initial hidden state for fade-in effect */
+            transition: opacity 1s ease-in; /* Fade-in effect */
+        }
+
+        /* When the page is fully loaded */
+        body.visible {
+            opacity: 1;
+        }
+
+        /* Styling the header */
+        header {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        /* Dark mode specific styles */
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        /* Search bar styles */
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 300px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-bar input:focus {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        /* Random twister box styles */
+        .twister-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 1.5em;
+            max-width: 400px;
+            margin-bottom: 30px;
+            color: var(--text-color-light);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .twister-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Dark mode twister styling */
+        body.dark-mode .twister-box {
+            background-color: #333;
+            color: var(--text-color-dark);
+        }
+
+        /* Toggle button for dark mode, aligned to the right */
+        .dark-mode-toggle {
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            position: absolute; /* Position it in the top-right corner */
+            top: 20px;
+            right: 20px;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--hover-color);
+        }
+
+        /* List styles for all tongue twisters */
+        .twister-list {
+            max-width: 600px;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .twister-list li {
+            background-color: white;
+            margin: 5px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            color: var(--text-color-light);
+        }
+
+        .twister-list li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Dark mode list styling */
+        body.dark-mode .twister-list li {
+            background-color: #444;
+            color: var(--text-color-dark);
+        }
+    </style>
+</head>
+<body>
+
+<header>Fun Tongue Twisters!</header>
+
+<!-- Search bar -->
+<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for a tongue twister..." onkeyup="searchTwisters()">
+</div>
+
+<!-- Random tongue twister display -->
+<div class="twister-box" id="twisterBox">Loading...</div>
+
+<!-- Dark mode toggle button -->
+<button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">Switch to Dark Mode</button>
+
+<!-- List of all tongue twisters -->
+<ul class="twister-list" id="twisterList"></ul>
+
+<script>
+// JavaScript to dynamically adjust viewport height for mobile devices
+function adjustViewport() {
+    const vh = window.innerHeight * 0.01; // Get 1% of the viewport height
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.body.classList.add('visible'); // Trigger fade-in effect
+}
+
+// Array of tongue twisters
+const tongueTwisters = [
+    "She sells seashells by the seashore.",
+    "Peter Piper picked a peck of pickled peppers.",
+    "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
+    "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.",
+    "Red lorry, yellow lorry, red lorry, yellow lorry.",
+    "I saw Susie sitting in a shoeshine shop.",
+    "Can you can a can as a canner can can a can?",
+    "A big black bear sat on a big black rug.",
+    "Toy boat, toy boat, toy boat.",
+    "The sixth sick sheik's sixth sheep's sick.",
+    "Can you can a can as a canner can can a can?",
+  "How can a clam cram in a clean cream can?",
+  "Six sleek swans swam swiftly southwards",
+    "If a dog chews shoes, whose shoes does he choose?",
+     "I saw Susie sitting in a shoeshine shop.",
+  "Denise sees the fleece, Denise sees the fleas. At least Denise could sneeze and feed and freeze the fleas",
+    "He thrusts his fists against the posts and still insists he sees the ghosts.",
+      "The great Greek grape growers grow great Greek grapes",
+       "The thirty-three thieves thought that they thrilled the throne throughout Thursday.",
+    "Four furious friends fought for the phone.",
+      "Fresh fried fish, fish fresh fried, fried fish fresh, fish fried fresh.",
+        "Fresh fried fish, fish fresh fried, fried fish fresh, fish fried fresh.",
+   "A skunk sat on a stump and thunk the stump stunk, but the stump thunk the skunk stunk.",
+     "If two witches were watching two watches, which witch would watch which watch?",
+        "I slit the sheet, the sheet I slit, and on the slitted sheet I sit",
+          "The queen in the queasy clean cream can was quickly questioned.",
+];
+
+// Function to display a random tongue twister
+function displayRandomTwister() {
+    const randomIndex = Math.floor(Math.random() * tongueTwisters.length);
+    const twisterBox = document.getElementById('twisterBox');
+    twisterBox.innerText = tongueTwisters[randomIndex];
+}
+
+// Function to display all tongue twisters
+function displayAllTwisters() {
+    const twisterList = document.getElementById('twisterList');
+    twisterList.innerHTML = ''; // Clear existing list
+    tongueTwisters.forEach(twister => {
+        const listItem = document.createElement('li');
+        listItem.innerText = twister;
+        twisterList.appendChild(listItem);
+    });
+}
+
+// Search functionality for tongue twisters
+function searchTwisters() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const filteredTwisters = tongueTwisters.filter(twister => twister.toLowerCase().includes(input));
+
+    if (filteredTwisters.length > 0) {
+        const randomTwister = filteredTwisters[Math.floor(Math.random() * filteredTwisters.length)];
+        document.getElementById('twisterBox').innerText = randomTwister;
+    } else {
+        document.getElementById('twisterBox').innerText = "No matching tongue twister found.";
+    }
+}
+
+// Run the function on load and resize
+window.addEventListener('load', () => {
+    adjustViewport();
+    displayRandomTwister(); // Display a random tongue twister on load
+    displayAllTwisters(); // Display all tongue twisters
+});
+window.addEventListener('resize', adjustViewport);
+
+// Dark mode toggle functionality
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const button = document.getElementById('darkModeToggle');
+    if (document.body.classList.contains('dark-mode')) {
+        button.textContent = 'Switch to Light Mode';
+    } else {
+        button.textContent = 'Switch to Dark Mode';
+    }
+}
+</script>
+
+</body>
+</html>
