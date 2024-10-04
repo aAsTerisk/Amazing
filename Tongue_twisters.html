@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Tongue Twisters</title>
     <style>
+         .styled-button {
+            background-color: #007bff; /* Button background color */
+            color: white; /* Text color */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 20px; /* Top/bottom and left/right padding */
+            font-size: 16px; /* Text size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+        }
+
+        .styled-button:hover {
+            background-color: #0056b3; /* Darker color on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        .styled-button:active {
+            transform: scale(0.95); /* Shrink when clicked */
+        }
         /* Root CSS variables for theming */
         :root {
             --bg-color-light: #f7f9fc; /* Light background: subtle light blue */
@@ -145,7 +164,7 @@
 <body>
 
 <header>Fun Tongue Twisters!</header>
-
+<button class="styled-button" onclick="goBack()">Back to Index</button>
 <!-- Search bar -->
 <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search for a tongue twister..." onkeyup="searchTwisters()">
