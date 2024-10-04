@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tongue Twister Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .search-bar input {
+      width: 50%;
+      padding: 10px;
+      font-size: 1.2em;
+    }
+    .twister-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .twister-item {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 30%;
+      font-size: 1.1em;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Fun Tongue Twisters
+</header>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search for a tongue twister..." onkeyup="searchTwisters()">
+</div>
+
+<div class="twister-list" id="twisterList">
+  <!-- Each tongue twister will be in its own div -->
+  <div class="twister-item">She sells seashells by the seashore.</div>
+  <div class="twister-item">Peter Piper picked a peck of pickled peppers.</div>
+  <div class="twister-item">How much wood would a woodchuck chuck if a woodchuck could chuck wood?</div>
+  <div class="twister-item">Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair. Fuzzy Wuzzy wasn’t very fuzzy, was he?</div>
+  <!-- Add more tongue twisters here -->
+</div>
+
+<footer>
+  © 2024 Fun Tongue Twisters
+</footer>
+
+<script>
+  function searchTwisters() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const twisters = document.getElementsByClassName('twister-item');
+
+    for (let i = 0; i < twisters.length; i++) {
+      const twister = twisters[i];
+      if (twister.innerText.toLowerCase().includes(input)) {
+        twister.style.display = '';
+      } else {
+        twister.style.display = 'none';
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
