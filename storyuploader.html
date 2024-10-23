@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engaging Story Collection with Search</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            letter-spacing: 1.2px;
+        }
+
+        /* Search bar styles */
+        .search-bar {
+            max-width: 400px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        /* Container */
+        .story-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Individual story box */
+        .story-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .story-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .story-title {
+            font-size: 1.5em;
+            color: #007BFF;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .story-box:hover .story-title {
+            color: #0056b3;
+        }
+
+        .story-description {
+            color: #555;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        /* Form styling */
+        .add-story-form {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .add-story-form input,
+        .add-story-form textarea {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-story-form button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-story-form button:hover {
+            background-color: #218838;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Engaging Story Collection</h1>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search stories by title or description..." onkeyup="searchStories()">
+    </div>
+
+    
+    <!-- Story container -->
+    <div class="story-container" id="storyContainer">
+        <!-- Predefined stories -->
+        <div class="story-box">
+            <h2 class="story-title">Story 1: The Mysterious Island</h2>
+            <p class="story-description">
+                An incredible adventure begins when a group of explorers finds an uncharted island, full of hidden treasures and dangers.
+            </p>
+        </div>
+
+        <div class="story-box">
+            <h2 class="story-title">Story 2: Journey to the Stars</h2>
+            <p class="story-description">
+                A thrilling tale about a scientist's mission to travel beyond our galaxy and uncover the secrets of the universe.
+            </p>
+        </div>
+
+        <div class="story-box">
+            <h2 class="story-title">Story 3: The Enchanted Forest</h2>
+            <p class="story-description">
+                In a magical forest filled with mystical creatures, a young adventurer must solve ancient riddles to save her kingdom.
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 Engaging Story Collection. All rights reserved.
+    </footer>
+
+    <script>
+        // Function to add a new story to the page
+        function addStory() {
+            // Get input values
+            const title = document.getElementById('storyTitle').value;
+            const description = document.getElementById('storyDescription').value;
+
+            // Check if the inputs are not empty
+            if (title === '' || description === '') {
+                alert('Please fill in both the title and description.');
+                return;
+            }
+
+            // Create a new story box
+            const storyBox = document.createElement('div');
+            storyBox.classList.add('story-box');
+
+            // Create and set title element
+            const storyTitle = document.createElement('h2');
+            storyTitle.classList.add('story-title');
+            storyTitle.textContent = title;
+
+            // Create and set description element
+            const storyDescription = document.createElement('p');
+            storyDescription.classList.add('story-description');
+            storyDescription.textContent = description;
+
+            // Append title and description to story box
+            storyBox.appendChild(storyTitle);
+            storyBox.appendChild(storyDescription);
+
+            // Append story box to the story container
+            document.getElementById('storyContainer').appendChild(storyBox);
+
+            // Clear the form fields after submission
+            document.getElementById('storyTitle').value = '';
+            document.getElementById('storyDescription').value = '';
+        }
+
+        // Function to filter stories by search input
+        function searchStories() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const stories = document.querySelectorAll('.story-box');
+
+            stories.forEach(story => {
+                const title = story.querySelector('.story-title').textContent.toLowerCase();
+                const description = story.querySelector('.story-description').textContent.toLowerCase();
+
+                // If the story title or description matches the search input, display the story, otherwise hide it
+                if (title.includes(input) || description.includes(input)) {
+                    story.style.display = '';
+                } else {
+                    story.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
