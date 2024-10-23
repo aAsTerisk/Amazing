@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persistent Story Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .story-form {
+            margin-bottom: 30px;
+        }
+        .story-form input, .story-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .story-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .story-form button:hover {
+            background-color: #218838;
+        }
+        .stories {
+            margin-top: 20px;
+        }
+        .story-card {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .story-card h2 {
+            color: #333;
+        }
+        .story-card p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Story Sharing with Persistence</h1>
+    </header>
+
+    <div class="container">
+        <div class="story-form">
+            <h2>Submit Your Story</h2>
+            <form id="storyForm">
+                <input type="text" id="title" placeholder="Story Title" required>
+                <textarea id="content" rows="5" placeholder="Write your story here..." required></textarea>
+                <button type="submit">Submit Story</button>
+            </form>
+        </div>
+
+        <div class="stories" id="storyList">
+            <h2>Stories</h2>
+            <!-- Story entries will appear here -->
+        </div>
+    </div>
+
+    <script>
+        // Select elements
+        const storyForm = document.getElementById('storyForm');
+        const storyList = document.getElementById('storyList');
+
+        // Load stories from local storage when the page loads
+        window.onload = function() {
+            loadStories();
+        };
+
+        // Event listener for form submission
+        storyForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from reloading the page
+
+            // Get input values
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            // Create a story object
+            const story = {
+                title: title,
+                content: content
+            };
+
+            // Save the story in local storage
+            saveStory(story);
+
+            // Add the new story to the page
+            addStoryToPage(story);
+
+            // Clear the form fields
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+        });
+
+        // Function to save story in local storage
+        function saveStory(story) {
+            // Get current stories from local storage
+            let stories = JSON.parse(localStorage.getItem('stories')) || [];
+            // Add the new story to the array
+            stories.push(story);
+            // Save the updated array to local storage
+            localStorage.setItem('stories', JSON.stringify(stories));
+        }
+
+        // Function to load stories from local storage
+        function loadStories() {
+            let stories = JSON.parse(localStorage.getItem('stories')) || [];
+            stories.forEach(function(story) {
+                addStoryToPage(story);
+            });
+        }
+
+        // Function to add a story to the page
+        function addStoryToPage(story) {
+            const newStory = document.createElement('div');
+            newStory.classList.add('story-card');
+
+            // Story title
+            const storyTitle = document.createElement('h2');
+            storyTitle.textContent = story.title;
+            newStory.appendChild(storyTitle);
+
+            // Story content
+            const storyContent = document.createElement('p');
+            storyContent.textContent = story.content;
+            newStory.appendChild(storyContent);
+
+            // Add new story to the story list
+            storyList.appendChild(newStory);
+        }
+    </script>
+
+</body>
+</html>
