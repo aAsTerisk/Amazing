@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Speed Challenge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f0f8ff;
+    }
+    h1 {
+      color: #ff4500;
+    }
+    #word-display {
+      font-size: 24px;
+      color: #333;
+      margin: 20px 0;
+    }
+    #input-word {
+      font-size: 20px;
+      padding: 10px;
+      width: 300px;
+      border: 2px solid #333;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #ff4500;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #timer, #result {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+    #letters-container {
+      position: relative;
+      height: 150px;
+    }
+    .letter {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff4500;
+    }
+    .target {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #ff4500;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Typing Speed Challenge</h1>
+  <p id="instructions">Type each letter as fast as you can to shoot it at the target!</p>
+  <div id="word-display">Press "Start Game" to Begin</div>
+  <input type="text" id="input-word" placeholder="Type here..." disabled>
+  <br><br>
+  <button onclick="startGame()">Start Game</button>
+  <div id="timer"></div>
+  <div id="result"></div>
+
+  <!-- Container for letters shooting to target -->
+  <div id="letters-container">
+    <div id="target" class="target"></div>
+  </div>
+
+  <script>
+    const words = ["rocket", "asteroid", "comet", "galaxy", "planet", "orbit", "space"];
+    let targetWord;
+    let currentIndex = 0;
+    let startTime;
+    let countdown;
+    
+    function startGame() {
+      targetWord = words[Math.floor(Math.random() * words.length)];
+      document.getElementById("word-display").textContent = targetWord;
+
+      currentIndex = 0;
+      document.getElementById("result").textContent = "";
+      document.getElementById("input-word").value = "";
+      document.getElementById("input-word").disabled = false;
+      document.getElementById("input-word").focus();
+
+      // Calculate time based on word length (2 seconds per letter)
+      let timeLeft = targetWord.length * 2;
+      document.getElementById("timer").textContent = `Time: ${timeLeft} seconds`;
+
+      // Start timer countdown
+      countdown = setInterval(() => {
+        timeLeft -= 1;
+        document.getElementById("timer").textContent = `Time: ${timeLeft} seconds`;
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          endGame("Time's up! Try again.");
+        }
+      }, 1000);
+
+      startTime = new Date().getTime();
+      document.getElementById("input-word").addEventListener("input", handleInput);
+    }
+
+    function handleInput() {
+      const inputField = document.getElementById("input-word");
+      const inputText = inputField.value;
+
+      if (inputText[currentIndex] === targetWord[currentIndex]) {
+        shootLetter(inputText[currentIndex]);
+        currentIndex++;
+
+        if (currentIndex === targetWord.length) {
+          clearInterval(countdown);
+          const endTime = new Date().getTime();
+          const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+          endGame(`Great job! You finished in ${timeTaken} seconds!`);
+        }
+      }
+    }
+
+    function shootLetter(letter) {
+      const letterElement = document.createElement("div");
+      letterElement.className = "letter";
+      letterElement.textContent = letter;
+      letterElement.style.left = "50px";
+      letterElement.style.top = "100px";
+
+      document.getElementById("letters-container").appendChild(letterElement);
+
+      // Animate the letter moving towards the target
+      let pos = 50;
+      const interval = setInterval(() => {
+        if (pos >= 250) {
+          clearInterval(interval);
+          document.getElementById("letters-container").removeChild(letterElement);
+        } else {
+          pos += 5;
+          letterElement.style.left = `${pos}px`;
+        }
+      }, 20);
+    }
+
+    function endGame(message) {
+      document.getElementById("result").textContent = message;
+      document.getElementById("input-word").disabled = true;
+      document.getElementById("input-word").removeEventListener("input", handleInput);
+    }
+  </script>
+</body>
+</html>
